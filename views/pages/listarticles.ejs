@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+        <title>Articles</title>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+       <style>
+       * {margin: 0; padding: 0;}
+
+#proba {
+  margin: 20px;
+}
+
+ul {
+  list-style-type: none;
+  width: 600px;
+}
+
+h3 {
+  font: bold 40px/1.5 Helvetica, Verdana, sans-serif;
+}
+
+li img {
+  float: left;
+  margin: 0 15px 0 0;
+}
+
+li p {
+  font: 200 17px/1.5 Georgia, Times New Roman, serif;
+}
+
+li {
+  padding: 10px;
+  overflow: auto;
+}
+
+li:hover {
+  background: #eee;
+  cursor: pointer;
+}
+       </style>
+       
+   
+    
+    </head>
+	<body>
+     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/logout">Logout</a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+         </button>
+       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+         <div class="navbar-nav">
+          <a class="nav-item nav-link active" href="/create">Create Article <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link" href="/update">Update Article</a>
+          <a class="nav-item nav-link" href="/delete">Delete Article</a>
+          <a class="nav-item nav-link" href="/list">List Articles</a>
+        </div>
+     </div>
+</nav><br>
+<h1 class="text-center">List articles</h1><br>
+
+<div class="container">
+   <% main.forEach(function (articles) { %>
+    <div id="proba">
+      <ul>  
+          <!-- <li><img src="data:image/png;base64,<%= articles.picture %>" alt="" > -->
+            <li><%= articles.picture %></li>
+          <h3><%= articles.title %></h3>
+          
+          <p><%= articles.text %></p></li>
+          
+         </ul>    
+        </div>                               
+   <% }) %>
+ </div> 
+
+ <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

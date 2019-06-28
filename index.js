@@ -61,7 +61,8 @@ app.post('/auth', function(request, response) {
 		connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
 			if (results.length > 0) {
 				request.session.loggedin = true;
-				request.session.username = username;
+                request.session.userId = results[0].id;
+                console.log( request.session.userId);
 				response.redirect('/home');
 			} else {
 				response.send('Incorrect Username and/or Password!');
@@ -86,13 +87,14 @@ app.get('/home', function(request, response) {
 //dodavanje vesti u bazu
 
 app.post('/add',function(req, res) {
-    console.log(req)
+
+    console.log("userid " + req.session.userId);
     let title = req.body.title;
     let picture = req.body.picture;
     let text = req.body.text;
-    let password = req.body.password;
+    let user_id = req.session.userId;
     
-    connection.query("INSERT INTO `loginforma`.`articles` (`title`, `picture`, `text`, `password`) VALUES ('"+title+"', '"+picture+"', '"+text+"', '"+password+"');", function(err, result) {
+    connection.query("INSERT INTO `loginforma`.`articles` (`title`, `picture`, `text`, `user_id`) VALUES ('"+title+"', '"+picture+"', '"+text+"', '"+user_id+"');", function(err, result) {
 
         if (err) {
             throw err;
@@ -116,10 +118,17 @@ app.post('/add',function(req, res) {
     })
 })*/
 
+app.get('/logout', function(req, res){
+  req.session.loggedin = false;
+  req.session.userId = null;
+  res.redirect('/')
+});
+
 
 app.get('/list', function(req, res){
 
-    connection.query('SELECT title,picture,text FROM articles', function(err, result) {
+    let userId = req.session.userId;
+    connection.query('SELECT article_id, title,picture,text FROM articles where user_id = ?', [userId], function(err, result) {
 
         if(err){
             throw err;
@@ -139,14 +148,16 @@ app.get('/list', function(req, res){
 
 
 
-app.post('/del',(req, res) => {
-    let delete_id = Number(req.body.article_id); 
-    db.query('DELETE FROM articles where article_id= ?', [delete_id],(err, rows,fields)=> {
+app.get('/del',(req, res) => {
+    let delete_id = req.query.articleId;
+    console.log("delete " + delete_id);
+    connection.query('DELETE FROM articles where article_id= ?', [delete_id],(err, rows,fields)=> {
         if (!err) {
             data = {
                 deleted: true
             }
-            res.send('Deleted successfully.');
+            res.redirect('/list');
+            
         } else {
             console.log(err);
             console.log(main);

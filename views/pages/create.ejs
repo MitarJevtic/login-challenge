@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+        <title>CreateArticle</title>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <!-- jQuery library -->
+       
+        
+        <!-- Latest compiled JavaScript -->
+       
+   
+    <style>
+        #posalji{
+            float: right;
+        }
+    </style>
+    </head>
+	<body>
+     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Logout</a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+         </button>
+       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+         <div class="navbar-nav">
+          <a class="nav-item nav-link active" href="/create">Create Article <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link" href="/update">Update Article</a>
+          <a class="nav-item nav-link" href="/delete">Delete Article</a>
+          <a class="nav-item nav-link" href="/listarticles">List Articles</a>
+        </div>
+     </div>
+</nav><br>
+<h1 class="text-center">Create your article</h1><br>
+
+<div class="container">
+<form action="create" method="POST">
+<div class="input-group mb-3">
+        <div class="input-group-prepend">
+                <span class="input-group-text">Add title</span>
+              </div>
+        <input type="text" class="form-control" name="title"  id="title" aria-label="Title" aria-describedby="basic-addon1">
+      </div><br>
+      
+      <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                    <span class="input-group-text">Add picture</span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" name="picture" id="picture" class="custom-file-input" id="inputGroupFile01">
+                    <label class="custom-file-label" for="inputGroupFile01"></label>
+                  </div>
+      </div><br>
+      <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Your text</span>
+            </div>
+            <textarea class="form-control" name="text" id="text" aria-label="With textarea"></textarea>
+          </div><br>
+      
+      <label for="password">Confirm your password</label>
+      <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                    <span class="input-group-text">Your password</span>
+                  </div>
+        <input type="password" class="form-control" name="password" id="password" aria-describedby="basic-addon3">
+      </div><br>
+      <button type="button"  id ="posalji" class="btn btn-primary btn-lg">Send</button>
+    </form>
+    </div>  
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+      <script>
+      $(document).ready( function () {
+        $('#posalji').on('click', function(event) {
+                    event.preventDefault();
+                     
+                     var title = $('#title').val();
+                     var picture = $('#picture').val();
+                     var text = $('#text').val();
+                     var password = $('#password').val();
+                     console.log(title,picture,text,password)
+                     var data = {};
+                     //data.id = id;
+                     data.title = title;
+                     data.picture = picture;
+                     data.text = text;
+                     data.password = password;
+                       jQuery.ajax({
+                          type: 'post',
+                          data: JSON.stringify(data),
+                          contentType: 'application/json',
+                          url: 'http://localhost:3000/add',
+                          success: function(data) {
+                            console.log('success');
+                            console.log(JSON.stringify(data));
+                            }
+                            
+                      });
+
+                      if(data.password==0){
+
+                        window.alert("All fields must be filled");
+                        
+                        event.stopPropagation();
+                        
+                        return;
+                        
+                        
+                        }
+
+                      window.location.href = "http://localhost:3000/create";
+                  })
+      })
+      </script>
+      
+     
+
+    </body>
+ </html>
