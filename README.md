@@ -2,15 +2,15 @@
 
 https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
 
-## H2 Instaliranje aplikacije
+##  Instaliranje aplikacije
 U ovom delu sam instalirao express js i napravio bazu podataka.
 Baza ima dve tabele,users i articles,user_id predstavlja relaciju izmedju tabela.
 U zavisnosti od toga ko je ulogovani korisnik vrsi se i prikaz vesti ostalo.
-##H2 Kreiranje fajlova
+## Kreiranje fajlova
 U ovom delu sam kreirao sve potrebne fajlove.
 U folderu pages se nalaze stranice za login-index.ejs,za kreiranje clanaka create.ejs,
 brisanje-delete.ejs,prikaz clanaka-listarticles.ejs i za update clanaka-update.ejs.
-##H3 Index.js
+## Index.js
 U fajlu index.js se nalazi konekcija ka bazi kao i sve potrebne rute za prikaz,kreiranje,
 brisanje i izmenu clanaka.
 
@@ -26,4 +26,6 @@ salje odgovor da se mora ulogovati.
 '/del'-Vrsi brisanje vesti u zavisnosti od id_article.
 
 '/edit'-Vrsi update tabele articles
-
+ ##Pages
+ U folderu pages se nalazi pocetna strana sa formom za login kao i strane za prikaz,izmenu,
+ brisanje i kreiranje clanaka.
