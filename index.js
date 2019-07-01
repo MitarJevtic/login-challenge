@@ -3,6 +3,7 @@ var express = require('express');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
+fileUpload = require('express-fileupload');
 var router = express.Router();
 
 var connection = mysql.createConnection({
@@ -20,6 +21,8 @@ app.use(session({
 }));
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
+
+app.use(fileUpload());
 
 app.use(express.static(path.join(__dirname, 'views')));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -48,24 +51,8 @@ app.get('/update', function(req, res) {
     res.render('pages/update');
 });
 
-//single page
-app.get('/single', function(req, res) {
-    res.sendFile(path.join(__dirname + 'pages/singlepage'));
-});
 
 
-/*
-app.get('/', function(request, response) {
-	response.sendFile(path.join(__dirname + '/index.html'));
-});
-
-app.get('/create', function(request, response) {
-	response.sendFile(path.join(__dirname + '/create.html'));
-});
-
-app.get('/list', function(req, res) {
-	res.render( 'C:\Users\mitar\Desktop\LoginForma\views\listarticles\ejs');
-});*/
 //login
 app.post('/auth', function(request, response) {
 	var username = request.body.username;
@@ -103,11 +90,12 @@ app.post('/add',function(req, res) {
 
     console.log("userid " + req.session.userId);
     let title = req.body.title;
-    let picture = req.body.picture;
+   
     let text = req.body.text;
     let user_id = req.session.userId;
     
-    connection.query("INSERT INTO `loginforma`.`articles` (`title`, `picture`, `text`, `user_id`) VALUES ('"+title+"', '"+picture+"', '"+text+"', '"+user_id+"');", function(err, result) {
+    
+    connection.query("INSERT INTO `loginforma`.`articles` (`title`, `text`, `user_id`) VALUES ('"+title+"', '"+text+"', '"+user_id+"');", function(err, result) {
 
         if (err) {
             throw err;
@@ -118,18 +106,7 @@ app.post('/add',function(req, res) {
     })
 })
 
-//prikaz vesti
-/*app.get('/listarticles', function(req, res) {
-    connection.query('SELECT article_id, title,text, password FROM articles', function(err, result) {
-        if (err) {
-            throw err;
-        } else {
-            
-            console.log(main);
-			res.render('listarticles', { data: results });
-        }
-    })
-})*/
+
 //logout
 app.get('/logout', function(req, res){
   req.session.loggedin = false;
@@ -141,7 +118,7 @@ app.get('/logout', function(req, res){
 app.get('/list', function(req, res){
 
     let userId = req.session.userId;
-    connection.query('SELECT article_id, title,picture,text FROM articles where user_id = ?', [userId], function(err, result) {
+    connection.query('SELECT article_id, title,text FROM articles where user_id = ?', [userId], function(err, result) {
 
         if(err){
             throw err;
@@ -149,22 +126,6 @@ app.get('/list', function(req, res){
             main = result;
             console.log(main);
             res.render('pages/listarticles', main);                
-        }
-    });
-
-});
-//editing content
-app.get('/show', function(req, res){
-
-    let userId = req.session.userId;
-    connection.query('SELECT article_id, title,picture,text FROM articles where user_id = ?', [userId], function(err, result) {
-
-        if(err){
-            throw err;
-        } else {
-            main = result;
-            console.log(main);
-            res.render('pages/update', main);                
         }
     });
 
@@ -197,7 +158,7 @@ app.post('/edit',function(req, res) {
    
     console.log(req)
     let title = req.body.title;
-    let picture = req.body.picture;
+    
     let text = req.body.text;
     let id = req.body.id;
      
