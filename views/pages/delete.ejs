@@ -4,15 +4,9 @@
 		<meta charset="utf-8">
         <title>Articles</title>
 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-        <!-- jQuery library -->
-       
-        
-        <!-- Latest compiled JavaScript -->
-       
-   
-  
+        <link rel="stylesheet"  type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+
     
     </head>
 	<body>
@@ -26,7 +20,7 @@
           <a class="nav-item nav-link active" href="/create">Create Article <span class="sr-only">(current)</span></a>
           <a class="nav-item nav-link" href="/update">Update Article</a>
           <a class="nav-item nav-link" href="/delete">Delete Article</a>
-          <a class="nav-item nav-link" href="/listarticles">List Articles</a>
+          <a class="nav-item nav-link" href="/list">List Articles</a>
         </div>
      </div>
 </nav><br>
@@ -54,8 +48,8 @@
                     <td><%= articles.picture %></td>
                     <td><%= articles.text %></td>
                    
-                    <td><button id="deleteRow">Delete</button></td>
                     <td><a class="nav-item nav-link" href="/del?articleId=<%= articles.article_id %>">Delete</a></td>
+        
                 </tr>
             <% }) %>
         </tbody>
@@ -63,39 +57,13 @@
   </div>
 </div>
 
-<script>
-    $(document).ready( function () {
-      //$('#myTable').DataTable();
-      const table = $('#myTable').DataTable();
-    
-                      
-      $('#deleteRow').click((e) =>{
-          e.preventDefault();
-          var id = $('#id').val();
-          var data = {};
-          data.id = id;
-        
-        $.ajax({
-          type: 'POST',
-          data: JSON.stringify(data),
-          contentType: 'application/json',
-          url: 'http://localhost:3000/del',
-          success: (data) => {
-            console.log(JSON.stringify(data));
-            }
-          });
-          delaying()
-      })
-  
-                     }); 
-  </script>
+
 
  
- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
- <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+        <title>Articles</title>
+       
+                
+        <link rel="stylesheet"  type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+
+
+
+
+
+
+ 
+    </head>
+	<body>
+     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Logout</a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+         </button>
+       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+         <div class="navbar-nav">
+          <a class="nav-item nav-link active" href="/create">Create Article <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link" href="/update">Update Article</a>
+          <a class="nav-item nav-link" href="/delete">Delete Article</a>
+          <a class="nav-item nav-link" href="/list">List Articles</a>
+        </div>
+     </div>
+</nav><br>
+
+<h1 class="text-center">Update your article</h1><br>
+
+<div class = "row">
+  <div class="container">
+  <table id="myTable" class="table table-striped table-bordered" cellspacing="0"  style="width:100%">
+      <thead>
+          <tr>
+              <th class='d-none'>Id</th>
+              <th>Title</th>
+              <th>Img</th>
+              <th>Text</th>
+              <th></th>
+          </tr>
+      </thead>
+      <tbody>
+          <% main.forEach(function(articles) { %>
+              <tr>
+                  <td class='d-none'><%= articles.article_id %></td>
+                  
+                  <td><%= articles.title %></td>
+                  <td><%= articles.picture %></td>
+                  <td><%= articles.text %></td>
+                 
+                  
+      
+              </tr>
+          <% }) %>
+      </tbody>
+  </table>
+</div>
+</div>
+
+<!-- Modal -->
+ <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+  <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title m-auto" id="editModalLabel">Edit Row</h5>
+      </div>
+      <div class="modal-body">
+      <form action="/edit" method="POST">
+          <div class="form-group">
+              <label for="number-input">Id:</label>
+              <div class="col-10 p-0">
+                  <input class="form-control" type="number" value="" id="id">
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="title">Title:</label>
+            <div class="col-10 p-0">
+                <input class="form-control" type="text" value="" id="title" name="title">
+            </div>
+        </div>
+       
+
+      
+      <div class="form-group">
+      <label for="comment">Text:</label>
+      <div class="col-10 p-0">
+          <textarea class="form-control" rows="5" id="text" name="text"></textarea>
+      </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-primary save" id = "save1">Save changes</button>
+      <button id="deleteRow" type="button" class="btn btn-danger">Delete</button>
+      </div>
+      </form>
+              
+  </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready( function () {
+    //$('#myTable').DataTable();
+    const table = $('#myTable').DataTable();
+
+    $('#editModal').modal('hide')
+                $(document).on('click','#myTable tbody tr',function() {
+                    var row = table.row();
+                    var rowData = table.row( this ).data(); 
+                   
+                    $('#editModal').modal('show')
+                  
+                    $('#id').val(`${rowData[0]}`) 
+                    $('#title').val(`${rowData[1]}`) 
+                     $("#picture" ).val(`${rowData[2]}`); 
+                     $('#text').val(`${rowData[3]}`) 
+                     
+                 
+                }) 
+                    $('#save1').on('click', function(event) {
+                      event.preventDefault();
+                       
+                      var id = $('#id').val()
+                      var title = $('#title').val();
+                      var picture = $('#picture').val();
+                      var text = $('#text').val();
+                     
+                      var data = {};
+                      data.id = id;
+                      data.title = title;
+                      data.picture = picture;
+                      data.text = text;
+                      
+                        $.ajax({
+                           type: 'post',
+                           data: JSON.stringify(data),
+                           contentType: 'application/json',
+                           url: 'http://localhost:3000/edit',
+                           success: function(data) {
+                             console.log('success');
+                             console.log(JSON.stringify(data));
+                             }
+                       });
+                       window.location.href = "http://localhost:3000/list";
+                    });
+  })
+
+</script>
+
+
+
+
+
+</body>
+</html>

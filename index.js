@@ -4,6 +4,7 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
 var router = express.Router();
+
 var connection = mysql.createConnection({
 	host     : 'localhost',
 	user     : 'root',
@@ -20,7 +21,9 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
+app.use(express.static(path.join(__dirname, 'views')));
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.set('view engine', 'ejs');
 
@@ -40,6 +43,16 @@ app.get('/create', function(req, res) {
 app.get('/delete', function(req, res) {
     res.render('pages/delete');
 });
+//update
+app.get('/update', function(req, res) {
+    res.render('pages/update');
+});
+
+//single page
+app.get('/single', function(req, res) {
+    res.sendFile(path.join(__dirname + 'pages/singlepage'));
+});
+
 
 /*
 app.get('/', function(request, response) {
@@ -53,7 +66,7 @@ app.get('/create', function(request, response) {
 app.get('/list', function(req, res) {
 	res.render( 'C:\Users\mitar\Desktop\LoginForma\views\listarticles\ejs');
 });*/
-
+//login
 app.post('/auth', function(request, response) {
 	var username = request.body.username;
 	var password = request.body.password;
@@ -84,7 +97,7 @@ app.get('/home', function(request, response) {
 	response.end();
 });
 
-//dodavanje vesti u bazu
+//create
 
 app.post('/add',function(req, res) {
 
@@ -117,14 +130,14 @@ app.post('/add',function(req, res) {
         }
     })
 })*/
-
+//logout
 app.get('/logout', function(req, res){
   req.session.loggedin = false;
   req.session.userId = null;
   res.redirect('/')
 });
 
-
+//listarticles
 app.get('/list', function(req, res){
 
     let userId = req.session.userId;
@@ -140,12 +153,24 @@ app.get('/list', function(req, res){
     });
 
 });
+//editing content
+app.get('/show', function(req, res){
 
+    let userId = req.session.userId;
+    connection.query('SELECT article_id, title,picture,text FROM articles where user_id = ?', [userId], function(err, result) {
+
+        if(err){
+            throw err;
+        } else {
+            main = result;
+            console.log(main);
+            res.render('pages/update', main);                
+        }
+    });
+
+});
 
 //delete
-
-
-
 
 
 app.get('/del',(req, res) => {
@@ -164,6 +189,31 @@ app.get('/del',(req, res) => {
        }
    })
 })
+
+
+
+//update
+app.post('/edit',function(req, res) {
+   
+    console.log(req)
+    let title = req.body.title;
+    let picture = req.body.picture;
+    let text = req.body.text;
+    let id = req.body.id;
+     
+    connection.query("UPDATE `loginforma`.`articles` SET `title`='"+title+"',  `text`='"+text+"'  WHERE `article_id`='"+id+"'", function(err, result) {
+
+        if (!err) {
+            
+           
+        } else {
+            var data = {};
+            res.json(req.body);
+      }
+    })
+})
+
+
 
 app.listen(3000);
 console.log("Server running at http://localhost:3000/");
